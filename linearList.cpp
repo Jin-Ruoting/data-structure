@@ -391,6 +391,15 @@ LinkList<DataType>:: ~LinkList()
     }    
 }
 
+//双链表
+template <typename DataType>
+struct DulNode
+{
+    DataType data;
+    DulNode<DataType> *prior, *next;
+};
+
+
 int main()
 {
     int a[] = {1, 3, 5, 7, 9};
