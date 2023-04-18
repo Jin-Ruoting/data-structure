@@ -395,8 +395,10 @@ LinkList<DataType>:: ~LinkList()
 template <typename DataType>
 struct DulNode
 {
-    DataType data;
-    DulNode<DataType> *prior, *next;
+    void Insert(int i, DataType x);     //在双链表第 i 个位置插入值为 x 的结点
+    DataType Delete(int i);             //删除双链表中第 i 个节点
+    DataType data;                      //初始化数据域
+    DulNode<DataType> *prior, *next;    //初始化前驱和后继指针
 };
 
 
