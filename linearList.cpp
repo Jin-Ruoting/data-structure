@@ -399,6 +399,7 @@ struct DNode
     DNode<DataType> *prior, *next;  //初始化前驱指针和后继指针
 };
 
+//定义双链表类
 template <typename DataType>
 class DLinkList
 {
@@ -413,16 +414,16 @@ public:
     int Empty();
     void PrintDLinkList();
 private:
-    DNode<DataType> *first;                                         //双链表的头指针
+    DNode<DataType> *first;         //双链表的头指针
 };
 
 //双链表无参构造函数
 template <typename DataType>
 DLinkList<DataType>::DLinkList()
 {
-    first = new Node<DataType>; //分配一个头结点
-    first->prior = nullptr;     //头结点的 prior 指针永远为空指针
-    first->next = nullptr;      //头结点后继结点暂时为空
+    first = new DNode<DataType>;    //分配一个头结点
+    first->prior = nullptr;         //头结点的 prior 指针永远为空指针
+    first->next = nullptr;          //头结点后继结点暂时为空
 }
 
 //析构函数，循环释放各个结点
@@ -441,7 +442,7 @@ int DLinkList<DataType>::Length()
 {
     DNode<DataType> *p = first->next;
     int count = 0;
-    while (p != nullptr)                //遍历双链表
+    while (p != nullptr)            //遍历双链表
     {
         p = p->next;
         count++;
@@ -535,6 +536,66 @@ void DLinkList<DataType>::PrintDLinkList()
         p = p->next;                        //工作指针 p 后移
     }
     cout << endl;
+}
+
+//定义带尾指针的循环单链表类，基本操作与单链表类似
+template <typename DataType>
+class CirSingLinkList
+{
+public:
+    CirSingLinkList();
+    int Empty();
+private:
+    Node<DataType> *rear;       //声明循环单链表尾指针，rear->next 即为头结点，便于对头结点终端结点的操作
+    //Node<DataType> *first;    //声明循环单链表头结点
+};
+
+//无参构造函数，初始化循环单链表
+template <typename DataType>
+CirSingLinkList<DataType>::CirSingLinkList()
+{
+    rear = new Node<DataType>;
+    rear->next = rear;          //空循环单链表终端结点指向结点本身
+}
+
+//判断循环单链表是否为空，若为空表则返回 1
+template <typename DataType>
+int CirSingLinkList<DataType>::Empty()
+{
+    if (rear->next == rear)
+        return 1;
+    else
+        return 0;
+}
+
+//定义循环双链表类，基本操作与双链表类似，遍历链表时需注意循环条件，通常判断工作指针是否等于头指针
+template <typename DataType>
+class CirDLinkList
+{
+public:
+    CirDLinkList();
+    int Empty();
+private:
+    DNode<DataType> *first;     //声明循环双链表头指针
+};
+
+//无参构造函数，初始化循环双链表
+template <typename DataType>
+CirDLinkList<DataType>::CirDLinkList()
+{
+    first = new DNode<DataType>;
+    first->next = first;
+    first->prior = first;
+}
+
+//判断循环双链表是否为空，若为空表，则返回 1
+template <typename DataType>
+int CirDLinkList<DataType>::Empty()
+{
+    if (first->next = first)
+        return 1;
+    else
+        return 0;
 }
 
 int main()
