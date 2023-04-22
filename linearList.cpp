@@ -705,6 +705,142 @@ DataType StaList<DataType>::Delete(int i)
     avail = q;                      //设置空闲链表头指针为新删除的结点
 }
 
+//2.3.01 (esay) 设计一个递归算法，删除不带头结点的单链表 L 中所有值为 x 的结点
+template <typename DataType>
+void f_2_3_01(Node<DataType> &L, DataType x)
+{
+    Node *p;
+    if (L = nullptr)
+        return;
+    if (L->data == x)
+    {
+        p = L;
+        L = L->next;
+        delete(p);                //删除头结点
+        f_2_3_01(L, x);           //递归删除剩余的结点
+    }
+    else                          //若 L 所指结点值不为 x
+        f_2_3_01(L->next, x);     //递归删除后面的结点
+}
+
+//2.3.02 (esay) 在带头结点的单链表 L 中，删除所有值为 x 的结点，并释放其空间，假设值为 x 的结点不唯一，试编写算法实现以上操作
+template <typename DataType>
+void f_2_3_02(Node<DataType> &L, DataType x)
+{
+    Node<DataType> *p = L->next;    //初始化工作指针 p，赋初值头结点后一位
+    Node<DataType> *pre = L;        //初始化工作指针前一位指针 pre，赋初值为头结点
+    Node<DataType> *q;              //初始化辅助指针 q
+    while (p != nullptr)            //遍历链表到末尾时停止
+    {
+        if (p->data = x)            //数据与待删数据相同时
+        {
+            pre->next = p->next;    //摘链
+            q = p;                  //暂存待删结点
+            p = p->next;            //工作指针后移
+            delete(q);              //释放被删除结点空间
+        }
+        else
+        {
+            pre = p;
+            p = p->next;            //后移结点 p 和结点 pre
+        }
+    }    
+}
+
+//2.3.03 (unknown) 设L为带头结点的单链表，编写算法实现从尾到头反向输出每个节点的值
+
+//2.3.04 (esay) 试编写在带头结点的单链表L中删除一个最小值结点的高效算法（假设最小值结点是唯一的）
+template <typename DataType>
+void f_2_3_04(Node<DataType> &L)
+{
+    Node<DataType> *pre = L;        //工作指针前驱结点
+    Node<DataType> *p = L->next;    //工作指针
+    Node<DataType> *minpre = L;     //最小值结点前驱结点
+    Node<DataType> *minp = L->next; //最小值结点
+    if (p == nullptr)               //若为空
+        throw "该表为空！"
+    while (p != nullptr)            //遍历链表
+    {
+        if (p->data < minp->data)   //若当前结点数据域比存储的最小值结点小
+        {
+            minp = p;               //替换当前存储的最小值结点
+            minpre = pre;
+        }
+        pre = p;                    //后移
+        p = p->next;
+    }
+    minpre->next = minp->next;      //摘除最小值结点
+    delete(minp);
+}
+
+//2.3.05 (medium) 试编写算法将带头结点的单链表就地逆置，所谓“就地”是指辅助空间复杂度为O(1)
+template <typename DataType>
+void f_2_3_05(Node<DataType> &L)
+{
+    Node<DataType> *p, *r;  //初始化工作指针 p 及其后继结点 r
+    p = L->next;            //工作指针复制头结点后继节点
+    L->next = nullptr;      //将头结点指针域置空
+    while (p != nullptr)    //采用头插法将指针 p 指向结点插入链表 L
+    {
+        r = p->next;        //暂存 p 的后继，以防断链
+        p->next = L->next;
+        L->next = p;
+        p = r;              //后移指针 p
+    }    
+}
+
+//2.3.07 (easy) 设在一个带表头结点的单链表中所有元素结点的数据值无序，试编写一个函数，删除表中所有介于给定的两个值（作为函数参数给出）之间的元素的元素
+template <typename DataType>
+void f_2_3_07(Node<DataType> &L, DataType min, DataType max)
+{
+    Node<DataType> *p = L->next;        //工作指针
+    Node<DataType> *pre = L;            //工作指针前驱结点
+    while (p != nullptr)
+    {
+        if (p->data > min && p->data < max)
+        {
+            pre->next = p->next;        //摘除符合条件结点
+            delete(p);
+            p = pre->next;              //后移
+        }
+        else                            //若不符合
+        {
+            pre = p;
+            p = p->next;
+        }        
+    }    
+}
+
+//2.3.10 (medium) 将一个带头结点的单链表A分解为两个带头结点的单链表A和B，使得A表中含有原表中 序号 为奇数的元素，而B表中含有原表中 序号 为偶数的元素，且保持其相对顺序不变
+template <typename DataType>
+DataType f_2_3_10(Node<DataType> &A)
+{
+    Node<DataType> B = new Node<DataType>;  //初始化偶数链表，分配存储空间
+    B->next = nullptr;                      //表 B 为空表，头结点后继为空
+    int i = 0;                              //初始化序号计数器
+    Node<DataType> *p = A->next;            //工作结点 p 赋值表 A 后继
+    A->next = nullptr;                      //将表 A 置空，头结点后继为空
+    Node<DataType> *ra = A, *rb = B;        //ra 和 rb 分别指向表 A 和表 B 的尾结点
+    while (p != nullptr)
+    {
+        i++;
+        if (i % 2 == 0)                     //元素序号为偶数
+        {
+            rb->next = p;                   //将结点 p 用尾插法插入表 B
+            rb = p;
+        }
+        else
+        {
+            ra->next = p;                   //奇数序号元素用尾插法插入表 A
+            ra = p;
+        }
+        p = p->next;                        //后移工作指针
+    }
+    ra->next = nullptr;                     //将表 a 尾结点指向空指针
+    rb->next = nullptr;                     //将表 b 尾结点指向空指针
+    return B;                               //返回序号为奇数的表 B，偶数表 A 为引用参数，可直接使用
+}
+
 int main()
 {
     int a[] = {1, 3, 5, 7, 9};
