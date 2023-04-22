@@ -618,9 +618,9 @@ public:
     void Insert(int i, DataType x);
     DataType Delete(int i);
 private:
-    SNode SList[MaxSize];           //声明静态链表数组
-    int first;                      //声明静态链表头指针
-    int avail;                      //avail 是空闲链表（全部由空闲数组单元组成的单链表）的头指针
+    SNode<DataType> SList[MaxSize];     //声明静态链表数组
+    int first;                          //声明静态链表头指针
+    int avail;                          //avail 是空闲链表（全部由空闲数组单元组成的单链表）的头指针
 };
 
 //无参构造函数，初始化空的静态链表和空闲链表
@@ -672,7 +672,7 @@ void StaList<DataType>::Insert(int i, DataType x)
 {
     int p;                                      //初始化工作指针 p
     int n = first;
-    while (int n < i-1 && SList[n].next != -1)  //找到需要插入结点位置的前一个结点，让工作指针 p 指向这个结点
+    while (n < i-1 && SList[n].next != -1)  //找到需要插入结点位置的前一个结点，让工作指针 p 指向这个结点
     {
         p = SList[n].next;
         n++;
@@ -692,7 +692,7 @@ DataType StaList<DataType>::Delete(int i)
 {
     int p;
     int n = first;
-    while (int n < i-1 && SList[n].next != -1)
+    while (n < i-1 && SList[n].next != -1)
     {
         p = SList[n].next;
         n++;
@@ -709,7 +709,7 @@ DataType StaList<DataType>::Delete(int i)
 template <typename DataType>
 void f_2_3_01(Node<DataType> &L, DataType x)
 {
-    Node *p;
+    Node<DataType> *p;
     if (L = nullptr)
         return;
     if (L->data == x)
@@ -758,7 +758,7 @@ void f_2_3_04(Node<DataType> &L)
     Node<DataType> *minpre = L;     //最小值结点前驱结点
     Node<DataType> *minp = L->next; //最小值结点
     if (p == nullptr)               //若为空
-        throw "该表为空！"
+        throw "该表为空！";
     while (p != nullptr)            //遍历链表
     {
         if (p->data < minp->data)   //若当前结点数据域比存储的最小值结点小
