@@ -1,3 +1,4 @@
+//定义单链表结构体
 template <typename DataType>
 struct Node
 {
@@ -5,6 +6,7 @@ struct Node
     Node<DataType> *next;
 };
 
+//带头结点的栈链类
 template<typename DataType>
 class LinkStack
 {
