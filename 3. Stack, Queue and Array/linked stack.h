@@ -1,10 +1,13 @@
 //定义单链表结构体
+/*
 template <typename DataType>
 struct Node
 {
     DataType data;
     Node<DataType> *next;
 };
+*/
+#include "singly linked list.h"
 
 //带头结点的栈链类
 template<typename DataType>

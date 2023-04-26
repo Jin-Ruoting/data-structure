@@ -1,5 +1,8 @@
 using namespace std;
 
+#ifndef NODE
+# define NODE
+
 template <typename DataType>
 struct Node
 {
@@ -10,6 +13,7 @@ struct Node
 template <typename DataType>
 class LinkList
 {
+public:
     LinkList();
     LinkList(DataType a[], int n);
     LinkList(int n, DataType a[]);
@@ -21,7 +25,7 @@ class LinkList
     DataType Delete(int i);
     int Empty();
     void PrintList();
-
+    Node<DataType>* GetFirst();
 private:
     Node<DataType> *first;
 };
@@ -145,7 +149,7 @@ LinkList<DataType>::LinkList(DataType a[], int n)
 template <typename DataType>
 LinkList<DataType>::LinkList(int n, DataType a[])
 {
-    first = new Node<DataType>;                 //为头结点 first 指针分配 DataTypr 类型大小的存储空间，并让 first 指向这个空间
+    first = new Node<DataType>;                 //为头结点 first 指针分配 DataType 类型大小的存储空间，并让 first 指向这个空间
     Node<DataType> *r = first, *s = nullptr;    //初始化尾指针 r ，由于当前为空链表故尾指针和头指针重合；初始化工作指针 s 置空
     for (int i = 0; i < n; i++)
     {
@@ -194,3 +198,13 @@ LinkList<DataType>:: ~LinkList()
         p = first;                  //工作指针 p 后移，继续指向当前头指针 first
     }    
 }
+
+//获取单链表头结点
+template <typename DataType>
+Node<DataType>* LinkList<DataType>::GetFirst()
+{
+    Node<DataType> *p = first;
+    return p;
+}
+
+#endif
