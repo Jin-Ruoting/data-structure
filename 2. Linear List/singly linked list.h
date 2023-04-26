@@ -1,7 +1,7 @@
 using namespace std;
 
-#ifndef NODE
-# define NODE
+#ifndef LINKLIST
+# define LINKLIST
 
 template <typename DataType>
 struct Node
