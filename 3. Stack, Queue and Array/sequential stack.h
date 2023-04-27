@@ -1,3 +1,5 @@
+#include <iostream>
+
 using namespace std;
 
 const int StackSize = 10;	 // 定义栈的大小
