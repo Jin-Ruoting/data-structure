@@ -29,6 +29,13 @@ int main()
     else
         cout << "Brackets are not balanced\n";
 
+    string cpt;
+    cout << "请输入一个表达式：" << endl;
+    cin >> cpt;
+    Expression E{cpt};                          // 定义对象变量 E
+    int result = E.Compute();                   // result 保存计算结果
+    cout << "表达式的值是：" << result << endl;
+
     // 返回 0 表示程序正常结束
     return 0;
 }
