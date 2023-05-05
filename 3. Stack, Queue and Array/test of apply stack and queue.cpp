@@ -22,13 +22,13 @@ int main()
     char expr[100];
     cout << "Enter an expression: ";
     cin >> expr;
-
     // 调用判断括号平衡的函数
     if (areBracketsBalanced(expr))
         cout << "Brackets are balanced\n";
     else
         cout << "Brackets are not balanced\n";
 
+    // 表达式求值
     string cpt;
     cout << "请输入一个表达式：" << endl;
     cin >> cpt;
