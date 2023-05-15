@@ -43,7 +43,7 @@ private:
     void RecursionPreOrder(BiNode<DataType> *bt);
     void RecursionInOrder(BiNode<DataType> *bt);
     void RecursionPostOrder(BiNode<DataType> *bt);
-    BiNode<DataType> *root;
+    BiNode<DataType> *root;                         // 指向根结点的头指针
 };
 
 // 构造函数，建立一棵二叉树
@@ -266,3 +266,43 @@ struct TriNode
     DataType data;
     TriNode<DataType> *lchild, *rchild, *parent;
 };
+
+// 线索链表的结点结构定义
+template <typename DataType>
+struct ThrNode
+{
+    DataType data;
+    int ltag;                           // 左标志位，为 0 表示 lchild 指向该结点的左孩子，为 1 表示 lchild 指向该结点的前驱
+    int rtag;                           // 右标志位，为 0 表示 rchild 指向该结点的左孩子，为 1 表示 rchild 指向该结点的后继
+    ThrNode<DataType> *lchild, *rchild;
+};
+
+// 中序线索链表类定义
+template <typename DataType>
+class InThrBiTree
+{
+public:
+    InThrBiTree();
+    ~InThrBiTree();
+    ThrNode<DataType> *Next(ThrNode<DataType> *p);
+    void InOrder();
+private:
+    ThrNode<DataType> *Creat();
+    void ThrBiTree(ThrNode<DataType> *bt, ThrNode<DataType> *pre);
+    void Release(ThrNode<DataType> *bt);
+    ThrNode<DataType> *root;                                        // 指向线索链表的头指针
+};
+
+// 构造函数，建立中序线索链表
+template <typename DataType>
+InThrBiTree<DataType>::InThrBiTree()
+{
+    root = Creat();             // 建立带线索标志的二叉链表
+    ThrBiTree(root, nullptr);   // 遍历二叉链表，建立线索
+}
+
+// 析构函数，释放各结点的存储空间
+template <typename DataType>
+InThrBiTree<DataType>::~InThrBiTree()
+{
+}
