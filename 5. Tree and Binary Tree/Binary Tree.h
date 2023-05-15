@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 // 二叉树的存储结构
 
 const int MaxSize = 100;        // 数组最大存储空间
@@ -26,6 +30,9 @@ class BiTree
 public:
     BiTree();
     ~BiTree();
+    void RecursionPreOrder();
+    void RecursionInOrder();
+    void RecursionPostOrder();
     void PreOrder();
     void InOrder();
     void PostOrder();
@@ -33,9 +40,9 @@ public:
 private:
     BiNode<DataType> *Creat();
     void Release(BiNode<DataType> *bt);
-    void PreOrder(BiNode<DataType> *bt);
-    void InOrder(BiNode<DataType> *bt);
-    void PostOrder(BiNode<DataType> *bt);
+    void RecursionPreOrder(BiNode<DataType> *bt);
+    void RecursionInOrder(BiNode<DataType> *bt);
+    void RecursionPostOrder(BiNode<DataType> *bt);
     BiNode<DataType> *root;
 };
 
@@ -53,25 +60,108 @@ BiTree<DataType>::~BiTree()
     Release(root);
 }
 
-// 前序遍历二叉树
+// 前序遍历二叉树的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionPreOrder()
+{
+    RecursionPreOrder(root);
+}
+
+// 中序遍历二叉树的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionInOrder()
+{
+    RecursionInOrder(root);
+}
+
+// 后序遍历二叉树的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionPostOrder()
+{
+    RecursionPostOrder(root);
+}
+
+// 前序遍历二叉树的非递归实现
 template <typename DataType>
 void BiTree<DataType>::PreOrder()
 {
-    PreOrder(root);
+    BiNode<DataType> *bt = root;
+    BiNode<DataType> *S[100];           // 定义一个顺序栈
+    int top = -1;                       // 初始化顺序栈
+    while (bt != nullptr || top != -1)  // 栈为空且根指针为空时退出循环
+    {
+        while (bt != nullptr)           // 根指针 bt 非空
+        {
+            cout << bt->data;           // 输出
+            S[++top] = bt;              // 根指针 bt 入栈
+            bt = bt->lchild;            // 准备遍历 bt 的左子树
+        }
+        if (top != -1)                  // 栈非空
+        {
+            bt = S[top--];              // 弹出栈顶元素至 bt
+            bt = bt->rchild;            // 准备遍历 bt 的右子树
+        }        
+    }    
 }
 
-// 中序遍历二叉树
+// 中序遍历二叉树的非递归实现
 template <typename DataType>
 void BiTree<DataType>::InOrder()
 {
-    InOrder(root);
+    BiNode<DataType> *bt = root;
+    BiNode<DataType> *S[100];           // 定义一个顺序栈
+    int top = -1;                       // 初始化顺序栈
+    while (bt != nullptr || top != -1)  // 栈为空且根指针为空时退出循环
+    {
+        while (bt != nullptr)           // 根指针 bt 非空
+        {
+            S[++top] = bt;              // 根指针 bt 入栈
+            bt = bt->lchild;            // 准备遍历 bt 的左子树
+        }
+        if (top != -1)                  // 栈非空
+        {
+            bt = S[top--];              // 弹出栈顶元素至 bt
+            cout << bt->data;           // 输出
+            bt = bt->rchild;            // 准备遍历 bt 的右子树
+        }        
+    }    
 }
 
-// 后序遍历二叉树
+// 栈元素的结构体类型定义
+template <typename DataType>
+struct element
+{
+    BiNode<DataType> *ptr;
+    int flag;               // 标志变量，为 1 表示遍历完左子树，栈顶结点不能出栈；值为 2 表示遍历完右子树，栈顶结点可以出栈并访问
+};
+
+// 后序遍历二叉树的非递归实现
 template <typename DataType>
 void BiTree<DataType>::PostOrder()
 {
-    PostOrder(root);
+    BiNode<DataType> *bt = root;                // 指针 bt 指向二叉链表的根指针
+    element<DataType> S[100];                   // 声明一个顺序栈
+    int top = -1;                               // 初始化顺序栈
+    while (bt != nullptr || top != -1)          // 栈 S 为空且根指针 bt 为空时退出循环
+    {
+        while (bt != nullptr)                   // 根指针非空时
+        {
+            top++;
+            S[top].ptr = bt;                    // bt 入栈
+            S[top].flag = 1;                    // 标志位置 1
+            bt = bt->lchild;                    // 准备遍历 bt 的左子树
+        }
+        while (top != -1 && S[top].flag == 2)   // 栈 S 非空且栈顶元素标志位为 2 时
+        {
+            bt = S[top--].ptr;                  // 弹出栈顶元素至 bt
+            cout << bt->data;                   // 访问 bt
+        }
+        if (top != -1)                          // 栈非空
+        {
+            S[top].flag = 2;                    // 栈顶元素的标志位置 2
+            bt = S[top].ptr->rchild;            // 准备遍历栈顶结点的右子树
+        }        
+    }    
 }
 
 // 层序遍历二叉树
@@ -79,5 +169,92 @@ template <typename DataType>
 void BiTree<DataType>::LevelOrder()
 {
     BiNode<DataType> *Q[100], *q = nullptr;
-    
+    int front = -1, rear = -1;              // 队列初始化
+    if (root == nullptr)                    // 二叉树为空，算法结束
+        return;
+    Q[++rear] = root;                       // 根指针入队
+    while (front != rear)                   // 当队列非空时
+    {
+        q = Q[++front];                     // 出队
+        cout << q->data << " ";             // 访问结点的数据域
+        if (q->lchild != nullptr)           // 若结点 q 存在左孩子
+            Q[++rear] = q->lchild;          // 将左孩子指针入队
+        if (q->rchild != nullptr)           // 若结点 q 存在右孩子
+            Q[++rear] = q->rchild;          // 将右孩子指针入队
+    }
+}
+
+// 构造函数调用
+template <typename DataType>
+BiNode<DataType> *BiTree<DataType>::Creat()
+{
+    BiNode<DataType> *bt;
+    char ch;
+    cin >> ch;                      // 输入结点的数据信息，假设为字符
+    if (ch == '#')                  // 若输入 # 表明为空树
+        bt = nullptr;
+    else
+    {
+        bt = new BiNode<DataType>;
+        bt->data = ch;              // 将输入的字符赋值给 bt->data
+        bt->lchild = Creat();       // 递归建立左子树
+        bt->rchild = Creat();       // 递归建立右子树
+    }
+    return bt;
+}
+
+// 析构函数调用
+template <typename DataType>
+void BiTree<DataType>::Release(BiNode<DataType> *bt)
+{
+    if (bt == nullptr)
+        return;
+    else
+    {
+        Release(bt->lchild);    // 递归释放左子树
+        Release(bt->rchild);    // 递归释放右子树
+        delete bt;              // 释放根结点
+    }    
+}
+
+// 前序遍历的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionPreOrder(BiNode<DataType> *bt)
+{
+    if (bt == nullptr)                  // 递归调用的结束条件
+        return;
+    else
+    {
+        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+        RecursionPreOrder(bt->lchild);  // 前序递归遍历 bt 的左子树
+        RecursionPreOrder(bt->rchild);  // 前序递归遍历 bt 的右子树
+    }    
+}
+
+// 中序遍历的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionInOrder(BiNode<DataType> *bt)
+{
+    if (bt == nullptr)                  // 递归调用的结束条件
+        return;
+    else
+    {
+        RecursionInOrder(bt->lchild);   // 中序递归遍历 bt 的左子树
+        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+        RecursionInOrder(bt->rchild);   // 中序递归遍历 bt 的右子树
+    }    
+}
+
+// 后序遍历的递归实现
+template <typename DataType>
+void BiTree<DataType>::RecursionPostOrder(BiNode<DataType> *bt)
+{
+    if (bt == nullptr)                  // 递归调用的结束条件
+        return;
+    else
+    {
+        RecursionPostOrder(bt->lchild); // 后序递归遍历 bt 的左子树
+        RecursionPostOrder(bt->rchild); // 后序递归遍历 bt 的右子树
+        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+    }    
 }

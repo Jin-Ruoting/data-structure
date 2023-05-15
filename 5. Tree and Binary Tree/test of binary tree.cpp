@@ -31,7 +31,7 @@ DataType GetLowestCommonAncestor(SeqBiTree<DataType>& tree, int i, int j)
 template <typename DataType>
 DataType Comm_Ancestor(SeqBiTree<DataType> T,int i, int j)
 {
-    if (T.data[i] != '\0' && T.data[j] != '\0') // 结点存在
+    if (T.data[i] != '#' && T.data[j] != '#') // 结点存在
     {
         while (i != j)                          // 两个编号不同时循环
         {
