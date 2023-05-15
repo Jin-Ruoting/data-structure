@@ -13,6 +13,7 @@ struct SeqBiTree
     int biTreeNum;              // 二叉树数组下标
 };
 
+
 // 二叉链表
 
 // 二叉链表存储结构
@@ -189,8 +190,8 @@ template <typename DataType>
 BiNode<DataType> *BiTree<DataType>::Creat()
 {
     BiNode<DataType> *bt;
-    char ch;
-    cin >> ch;                      // 输入结点的数据信息，假设为字符
+    DataType ch;
+    cin >> ch;                      // 输入结点的数据信息
     if (ch == '#')                  // 若输入 # 表明为空树
         bt = nullptr;
     else
@@ -225,7 +226,7 @@ void BiTree<DataType>::RecursionPreOrder(BiNode<DataType> *bt)
         return;
     else
     {
-        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+        cout << bt->data <<" ";         // 访问根结点 bt 的数据域
         RecursionPreOrder(bt->lchild);  // 前序递归遍历 bt 的左子树
         RecursionPreOrder(bt->rchild);  // 前序递归遍历 bt 的右子树
     }    
@@ -240,7 +241,7 @@ void BiTree<DataType>::RecursionInOrder(BiNode<DataType> *bt)
     else
     {
         RecursionInOrder(bt->lchild);   // 中序递归遍历 bt 的左子树
-        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+        cout << bt->data <<" ";         // 访问根结点 bt 的数据域
         RecursionInOrder(bt->rchild);   // 中序递归遍历 bt 的右子树
     }    
 }
@@ -255,9 +256,10 @@ void BiTree<DataType>::RecursionPostOrder(BiNode<DataType> *bt)
     {
         RecursionPostOrder(bt->lchild); // 后序递归遍历 bt 的左子树
         RecursionPostOrder(bt->rchild); // 后序递归遍历 bt 的右子树
-        cout << bt->data <<" ";         // 访问根节点 bt 的数据域
+        cout << bt->data <<" ";         // 访问根结点 bt 的数据域
     }    
 }
+
 
 // 三叉链表存储二叉树，相比二叉链表增加 parent 域存储指向该结点的双亲结点的指针
 template <typename DataType>
@@ -266,6 +268,7 @@ struct TriNode
     DataType data;
     TriNode<DataType> *lchild, *rchild, *parent;
 };
+
 
 // 线索链表的结点结构定义
 template <typename DataType>
@@ -305,4 +308,90 @@ InThrBiTree<DataType>::InThrBiTree()
 template <typename DataType>
 InThrBiTree<DataType>::~InThrBiTree()
 {
+    Release(root);
+}
+
+// 查找后继结点
+template <typename DataType>
+ThrNode<DataType> *InThrBiTree<DataType>::Next(ThrNode<DataType> *p)
+{
+    ThrNode<DataType> *q = nullptr; // 初始化工作指针 q
+    if (p->rtag == 1)
+        q = p->rchild;              // 直接得到后继结点
+    else
+    {
+        q = p->rchild;              // 工作指针 q 指向结点 p 的右孩子
+        while (q->ltag == 0)        // 查找最左下结点
+            q = q->lchild;
+    }
+    return q;
+}
+
+// 中序遍历
+template <typename DataType>
+void InThrBiTree<DataType>::InOrder()
+{
+    if (root == nullptr)            // 如果线索链表为空，则空操作返回
+        return;
+    ThrNode<DataType> *p = root;
+    while (p->ltag == 0)            // 查找遍历序列的第一个结点 p
+        p = p->lchild;
+    cout << p->data;
+    while (p->rchild != nullptr)    // 当结点 p 存在后继，依次访问其后继结点
+    {
+        p = Next(p);
+        cout << p->data;
+    }
+}
+
+// 构造函数调用
+template <typename DataType>
+ThrNode<DataType> *InThrBiTree<DataType>::Creat()
+{
+    ThrNode<DataType> *bt;
+    DataType ch;
+    cin >> ch;                      // 输入结点的数据信息，假设为字符
+    if (ch == '#')                  // 若输入 # 表明为空树
+        bt = nullptr;
+    else
+    {
+        bt = new BiNode<DataType>;
+        bt->data = ch;              // 将输入的字符赋值给 bt->data
+        bt->ltag = bt->rtag = 0;    // 将标志位初始化为 0
+        bt->lchild = Creat();       // 递归建立左子树
+        bt->rchild = Creat();       // 递归建立右子树
+    }
+    return bt;
+}
+
+// 线索化二叉链表，将二叉链表中的空指针改为指向前驱或后继的线索，bt 为工作指针，pre 始终指向上一访问的结点
+template <typename DataType>
+void InThrBiTree<DataType>::ThrBiTree(ThrNode<DataType> *bt, ThrNode<DataType> *pre)
+{
+    if (bt == nullptr)
+        return;
+    ThrBiTree(bt->lchild, pre); // 对 bt 的左子树递归建立线索
+    if (bt->lchild == nullptr)  // 如果 bt 没有左孩子
+    {
+        bt->ltag = 1;           // 将 bt 的左标志置为 1
+        bt->lchild = pre;       // 设置 bt 的前驱线索 pre
+    }
+    if (bt->rchild == nullptr)  // 如果 bt 没有右孩子
+        bt->rtag = 1;           // 将 bt 的右标志置为 1
+    if (pre->rtag == 1)         // 结点 pre 的右标志为 1
+        pre->rchild = bt;       // 设置 pre 的后继线索
+    pre = bt;                   // 令 pre 指向刚访问的结点 bt
+    ThrBiTree(bt->rchild, pre); // 对 bt 的右子树递归建立线索
+}
+
+// 析构函数调用
+template <typename DataType>
+void InThrBiTree<DataType>::Release(ThrNode<DataType> *bt)
+{
+    if (bt != nullptr)
+    {        
+        Release(bt->lchild);    // 递归释放左子树        
+        Release(bt->rchild);    // 递归释放右子树        
+        delete bt;              // 释放当前结点
+    }
 }
