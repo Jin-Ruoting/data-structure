@@ -258,3 +258,11 @@ void BiTree<DataType>::RecursionPostOrder(BiNode<DataType> *bt)
         cout << bt->data <<" ";         // 访问根节点 bt 的数据域
     }    
 }
+
+// 三叉链表存储二叉树，相比二叉链表增加 parent 域存储指向该结点的双亲结点的指针
+template <typename DataType>
+struct TriNode
+{
+    DataType data;
+    TriNode<DataType> *lchild, *rchild, *parent;
+};
