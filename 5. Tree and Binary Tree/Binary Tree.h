@@ -1,6 +1,13 @@
 // 二叉树的存储结构
 
-// 顺序存储结构
+const int MaxSize = 100;        // 数组最大存储空间
+// 二叉树的顺序存储结构
+template <typename DataType>
+struct SeqBiTree
+{
+    DataType data[MaxSize];     // 二叉树数据域数组
+    int biTreeNum;              // 二叉树数组下标
+};
 
 // 二叉链表
 
