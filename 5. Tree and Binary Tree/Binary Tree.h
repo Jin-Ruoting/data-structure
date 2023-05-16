@@ -350,7 +350,7 @@ ThrNode<DataType> *InThrBiTree<DataType>::Creat()
 {
     ThrNode<DataType> *bt;
     DataType ch;
-    cin >> ch;                      // 输入结点的数据信息，假设为字符
+    cin >> ch;                      // 输入结点的数据信息，假设为 DataType 类型
     if (ch == '#')                  // 若输入 # 表明为空树
         bt = nullptr;
     else
