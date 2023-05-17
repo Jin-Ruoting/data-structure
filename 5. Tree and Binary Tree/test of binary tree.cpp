@@ -1,6 +1,7 @@
-#include "Binary Tree.h"
-
 #include <iostream>
+
+#include "Binary Tree.h"
+#include "..\3. Stack, Queue and Array\sequential queue.h"
 
 using namespace std;
 
@@ -42,6 +43,33 @@ DataType Comm_Ancestor(SeqBiTree<DataType> T,int i, int j)
         }
         return T.data[i];
     }    
+}
+
+// 5.3.07 二叉树按二叉链表形式存储，试编写一个判别给定二叉树是否是完全二叉树的算法
+template <typename DataType>
+bool IsComplete(BiNode<DataType> *T)
+{
+    CirQueue<DataType> Q;
+    if(!T)
+        return true;                        // 空树为满二叉树
+    Q.EnQueue(T);
+    while (!Q.Empty())
+    {
+        BiNode<DataType> *p = Q.DeQueue();
+        if (p)                              // 结点非空，将其左右子树直接入队
+        {
+            Q.EnQueue(p->lchild);
+            Q.EnQueue(p->rchild);
+        }
+        else                                // 结点为空，检查其后是否有非空结点
+            while (!Q.Empty())
+            {
+                p = Q.DeQueue();
+                if (p)                      // 后续存在非空结点，为非完全二叉树
+                    return false;
+            }            
+    }
+    return true;
 }
 
 int main()
