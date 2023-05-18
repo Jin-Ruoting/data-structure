@@ -67,7 +67,7 @@ bool IsComplete(BiNode<DataType> *T)
                 p = Q.DeQueue();
                 if (p)                      // 后续存在非空结点，为非完全二叉树
                     return false;
-            }            
+            }
     }
     return true;
 }
@@ -120,7 +120,41 @@ DataType PreNode(BiNode<DataType> *root, int k)
 }
 
 // 5.3.16 (medium) 设计一个算法将二叉树的叶结点按从左到右的顺序连成一个单链表，表头指针为 head。二叉树按二叉链表方式存储，链接时用叶结点的右指针域来存放单链表指针
+template <typename DataType>
+BiNode<DataType> *LeafLinkedList(BiNode<DataType> *bt, BiNode<DataType> *head = nullptr, BiNode<DataType> *rear = nullptr)
+{
+    if (bt == nullptr)
+        return;
+    if (bt->lchild == nullptr && bt->rchild == nullptr) // 当前结点为叶结点
+    {
+        if (head == nullptr)                            // 如果单链表为空
+        {
+            head = bt;                                  // 当前结点作为头结点
+            rear = bt;                                  // 当前结点作为尾结点
+        }
+        else
+        {
+            rear->rchild = bt;                          // 单链表不为空，则将当前结点链接到尾结点右指针域
+            rear = bt;                                  // 更新尾结点为当前结点
+        }        
+    }
+    LeafLinkedList(bt->lchild);
+    LeafLinkedList(bt->rchild);
+    rear->rchild = nullptr;                             // 设置链表尾
+    return head;
+}
 
+// 5.3.17 (medium) 试设计判断两棵二叉树是否相似的算法。所谓二叉树 T1 和 T2 相似，指的是 T1 和 T2 都是空的二叉树或都只有一个根节点；或者 T1 的左子树和 T2 的左子树是相似的，且 T1 的右子树和 T2 的右子树是相似的
+template <typename DataType>
+bool IsSimilar(BiNode<DataType> *T1, BiNode<DataType> *T2)
+{
+    if (T1 == nullptr && T2 == nullptr)         // 两棵树都是空的
+        return true;
+    else if (T1 == nullptr || T2 == nullptr)    // 只有一棵树为空
+        return false;
+    else                                        // 递归判断，两棵树的左子树和右子树同时相似则相似
+        return IsSimilar(T1->lchild, T2->lchild) && IsSimilar(T1->rchild, T2->rchild);
+}
 
 int main()
 {
