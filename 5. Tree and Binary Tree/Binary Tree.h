@@ -38,6 +38,7 @@ public:
     void InOrder();
     void PostOrder();
     void LevelOrder();
+    BiNode<DataType> *Root();
 private:
     BiNode<DataType> *Creat();
     void Release(BiNode<DataType> *bt);
@@ -51,6 +52,7 @@ private:
 template <typename DataType>
 BiTree<DataType>::BiTree()
 {
+    cout << "请输入一个扩展二叉树的前序遍历序列：" << endl;
     root = Creat();
 }
 
@@ -174,6 +176,7 @@ void BiTree<DataType>::LevelOrder()
     if (root == nullptr)                    // 二叉树为空，算法结束
         return;
     Q[++rear] = root;                       // 根指针入队
+    cout << "二叉树的层序遍历结果为：";
     while (front != rear)                   // 当队列非空时
     {
         q = Q[++front];                     // 出队
@@ -183,6 +186,14 @@ void BiTree<DataType>::LevelOrder()
         if (q->rchild != nullptr)           // 若结点 q 存在右孩子
             Q[++rear] = q->rchild;          // 将右孩子指针入队
     }
+    cout << endl;
+}
+
+// 在函数外读取根节点
+template <typename DataType>
+BiNode<DataType> *BiTree<DataType>::Root()
+{
+    return root;
 }
 
 // 构造函数调用

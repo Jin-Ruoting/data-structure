@@ -45,7 +45,7 @@ DataType Comm_Ancestor(SeqBiTree<DataType> T,int i, int j)
     }    
 }
 
-// 5.3.07 二叉树按二叉链表形式存储，试编写一个判别给定二叉树是否是完全二叉树的算法
+// 5.3.07 (easy) 二叉树按二叉链表形式存储，试编写一个判别给定二叉树是否是完全二叉树的算法
 template <typename DataType>
 bool IsComplete(BiNode<DataType> *T)
 {
@@ -72,13 +72,77 @@ bool IsComplete(BiNode<DataType> *T)
     return true;
 }
 
+// 5.3.08 (easy) 假设二叉树采用二叉链表存储结构存储，试设计一个算法，计算一棵给定二叉树的所有双分支结点的个数
+template <typename DataType>
+int DsonNodes(BiNode<DataType> *root)
+{
+    if (root == nullptr)                                            // root 为空结点
+        return 0;
+    else if (root->lchild != nullptr && root->rchild != nullptr)    // root 为双分支结点
+        return DsonNodes(root->lchild) + DsonNodes(root->rchild) + 1;
+    else                                                            // root 为单分支结点或叶结点
+        return DsonNodes(root->lchild) + DsonNodes(root->rchild);
+}
+
+// 5.3.09 (medium) 设树 B 是一棵采用链式存储的二叉树，编写一个把树 B 中所有结点的左、右子树进行交换的函数
+template <typename DataType>
+void Swap(BiNode<DataType> *B)
+{
+    if (B)
+    {
+        Swap(B->lchild);                    // 递归查找左子树
+        Swap(B->rchild);                    // 递归查找右子树
+        BiNode<DataType> *temp = B->lchild; // 暂存左子树结点指针
+        B->lchild = B->rchild;
+        B->rchild = temp;
+    }    
+}
+
+// 5.3.10 (easy) 假设二叉树采用二叉链表存储结构存储，试设计一个算法，求先序遍历序列中第 k (1 ≤ k ≤ 二叉树中结点的个数) 个结点的值
+template <typename DataType>
+DataType PreNode(BiNode<DataType> *root, int k)
+{
+    int i = 1;
+    if (root == nullptr)
+        throw std::invalid_argument("该结点为空");
+    if (k == 1)
+        return root->data;
+    DataType result;
+    try
+    {
+        result = PreNode(root->lchild, k - 1);   // 递归查找左子树
+    }
+    catch(const std::invalid_argument&)
+    {
+        result = PreNode(root->rchild, k - 1);   // 递归查找右子树
+    }
+    return result;
+}
+
+// 5.3.16 (medium) 设计一个算法将二叉树的叶结点按从左到右的顺序连成一个单链表，表头指针为 head。二叉树按二叉链表方式存储，链接时用叶结点的右指针域来存放单链表指针
+
+
 int main()
 {
-    SeqBiTree<char> tree = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, 26};
+    SeqBiTree<char> tree = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, 26};    // 初始化一个顺序存储的二叉树
+    BiTree<char> LTree{};   // 初始化一个二叉链表，此处使用 'AB#D##C##' 序列，该序列为扩展二叉树前序遍历序列，见王红梅《数据结构》第 144 页
+    // 05
     int i = 2;
     int j = 8;
     char ancestor = GetLowestCommonAncestor(tree, i, j);
     cout << "The lowest common ancestor of node " << i << " and node " << j << " is " << ancestor << endl;
+
+    // 09
+    Swap(LTree.Root());
+    LTree.LevelOrder();
+
+    // 10
+    int k;                  // 想要访问的结点在二叉树先序遍历中的序号
+    cout << "请输入需要先序遍历查找元素的序号：";
+    cin >> k;
+    char r = PreNode(LTree.Root(), k);
+    cout << "二叉树先序遍历序列中第 " << k << " 个结点的值为 " << r << endl;
+
 
     return 0;
 }
