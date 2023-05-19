@@ -1,12 +1,24 @@
 // 树的存储结构
 
-// 双亲表示法 (parent expression) 的结点
+const int MaxSize = 100;    // 树中最多结点数
+
+// 双亲表示法 (parent expression) 采用一组连续空间来存储每个结点，同时在每个结点中增设一个伪指针，指示其双亲结点在数组中的位置
+
+// 树的结点定义
 template<typename DataType>
 struct PNode
 {
-    DataType data;  // 存储树中结点的数据信息
-    int parent;     // 存储该结点的双亲在数组中的下标，值为 -1 时表示该结点无双亲，为根节点
+    DataType data;          // 存储树中结点的数据信息
+    int parent;             // 存储该结点的双亲在数组中的下标，值为 -1 时表示该结点无双亲，为根节点
 };
+// 树的类型定义
+template<typename DataType>
+struct PTree
+{
+    PNode nodes[MaxSize];   // 双亲表示
+    int n;                  // 结点数
+};
+
 
 /* 
 * 孩子表示法 (child expression) 是一种基于链表的存储方法，即把每个结点的孩子排列起来，看成是一个线性表，且以单链表存储，称为该结点的孩子链表，则 n 个结点共有 n 个孩子链表（叶子结点的孩子链表为空表）
