@@ -15,7 +15,7 @@ struct PNode
 template<typename DataType>
 struct PTree
 {
-    PNode nodes[MaxSize];   // 双亲表示
+    PNode<DataType> nodes[MaxSize];   // 双亲表示
     int n;                  // 结点数
 };
 
