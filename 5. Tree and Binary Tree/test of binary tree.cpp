@@ -177,6 +177,5 @@ int main()
     char r = PreNode(LBinTree.Root(), k);
     cout << "二叉树先序遍历序列中第 " << k << " 个结点的值为 " << r << endl;
 
-
     return 0;
 }
