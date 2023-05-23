@@ -520,7 +520,7 @@ DataType DLinkList<DataType>::DeleteDNode(DNode<DataType> *p)
 template <typename DataType>
 int DLinkList<DataType>::Empty()
 {
-    if (first->next = nullptr)
+    if (first->next == nullptr)
         return 1;
     return 0;
 }
@@ -592,7 +592,7 @@ CirDLinkList<DataType>::CirDLinkList()
 template <typename DataType>
 int CirDLinkList<DataType>::Empty()
 {
-    if (first->next = first)
+    if (first->next == first)
         return 1;
     else
         return 0;
@@ -710,7 +710,7 @@ template <typename DataType>
 void f_2_3_01(Node<DataType> &L, DataType x)
 {
     Node<DataType> *p;
-    if (L = nullptr)
+    if (L == nullptr)
         return;
     if (L->data == x)
     {
@@ -732,7 +732,7 @@ void f_2_3_02(Node<DataType> &L, DataType x)
     Node<DataType> *q;              //初始化辅助指针 q
     while (p != nullptr)            //遍历链表到末尾时停止
     {
-        if (p->data = x)            //数据与待删数据相同时
+        if (p->data == x)            //数据与待删数据相同时
         {
             pre->next = p->next;    //摘链
             q = p;                  //暂存待删结点
