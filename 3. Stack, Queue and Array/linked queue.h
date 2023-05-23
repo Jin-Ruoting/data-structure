@@ -1,4 +1,4 @@
-#include "singly linked list.h"
+#include "..//2. Linear List//singly linked list.h"
 
 template <typename DataType>
 class LinkQueue

@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "binary tree.h"
-#include "..\3. Stack, Queue and Array\sequential queue.h"
+#include "..//3. Stack, Queue and Array//sequential queue.h"
 
 using namespace std;
 
