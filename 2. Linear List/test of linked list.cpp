@@ -10,7 +10,7 @@ template <typename DataType>
 void f_2_3_01(Node<DataType> &L, DataType x)
 {
     Node<DataType> *p;
-    if (L = nullptr)
+    if (L == nullptr)
         return;
     if (L->data == x)
     {
@@ -32,7 +32,7 @@ void f_2_3_02(Node<DataType> &L, DataType x)
     Node<DataType> *q;              //初始化辅助指针 q
     while (p != nullptr)            //遍历链表到末尾时停止
     {
-        if (p->data = x)            //数据与待删数据相同时
+        if (p->data == x)            //数据与待删数据相同时
         {
             pre->next = p->next;    //摘链
             q = p;                  //暂存待删结点

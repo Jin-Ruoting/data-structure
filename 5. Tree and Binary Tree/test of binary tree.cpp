@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Binary Tree.h"
-#include "..\3. Stack, Queue and Array\sequential queue.h"
+#include "binary tree.h"
+#include "..//3. Stack, Queue and Array//sequential queue.h"
 
 using namespace std;
 
@@ -158,25 +158,24 @@ bool IsSimilar(BiNode<DataType> *T1, BiNode<DataType> *T2)
 
 int main()
 {
-    SeqBiTree<char> tree = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, 26};    // 初始化一个顺序存储的二叉树
-    BiTree<char> LTree{};   // 初始化一个二叉链表，此处使用 'AB#D##C##' 序列，该序列为扩展二叉树前序遍历序列，见王红梅《数据结构》第 144 页
+    SeqBiTree<char> SeqBinTree = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, 26};    // 初始化一个顺序存储的二叉树
+    BiTree<char> LBinTree{};   // 初始化一个二叉链表，此处使用 'AB#D##C##' 序列，该序列为扩展二叉树前序遍历序列，见王红梅《数据结构》第 144 页
     // 05
     int i = 2;
     int j = 8;
-    char ancestor = GetLowestCommonAncestor(tree, i, j);
+    char ancestor = GetLowestCommonAncestor(SeqBinTree, i, j);
     cout << "The lowest common ancestor of node " << i << " and node " << j << " is " << ancestor << endl;
 
     // 09
-    Swap(LTree.Root());
-    LTree.LevelOrder();
+    Swap(LBinTree.Root());
+    LBinTree.LevelOrder();
 
     // 10
     int k;                  // 想要访问的结点在二叉树先序遍历中的序号
     cout << "请输入需要先序遍历查找元素的序号：";
     cin >> k;
-    char r = PreNode(LTree.Root(), k);
+    char r = PreNode(LBinTree.Root(), k);
     cout << "二叉树先序遍历序列中第 " << k << " 个结点的值为 " << r << endl;
-
 
     return 0;
 }

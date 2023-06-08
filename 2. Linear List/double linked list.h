@@ -129,7 +129,7 @@ DataType DLinkList<DataType>::DeleteDNode(DNode<DataType> *p)
 template <typename DataType>
 int DLinkList<DataType>::Empty()
 {
-    if (first->next = nullptr)
+    if (first->next == nullptr)
         return 1;
     return 0;
 }
@@ -201,7 +201,7 @@ CirDLinkList<DataType>::CirDLinkList()
 template <typename DataType>
 int CirDLinkList<DataType>::Empty()
 {
-    if (first->next = first)
+    if (first->next == first)
         return 1;
     else
         return 0;

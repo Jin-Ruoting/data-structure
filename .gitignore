@@ -34,5 +34,4 @@
 *.vscode
 *.json
 *.txt
-main.cpp
 build
