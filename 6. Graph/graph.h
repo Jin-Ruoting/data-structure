@@ -91,7 +91,6 @@ struct VertexNode
 };
 
 
-// const int MaxSize = 10;
 // 邻接表的实现
 template <typename DataType>
 class ALGraph
@@ -99,6 +98,8 @@ class ALGraph
 public:
     ALGraph(DataType a[], int n, int e);
     ~ALGraph();
+    void DFTraverse(int v);
+    void BFTraverse(int v);
 private:
     VertexNode<DataType> adjlist[MaxSize];  // 存放顶点表的数组
     int vertexNum, edgeNum;                 // 图的顶点数和边数
@@ -140,6 +141,51 @@ ALGraph<DataType>::~ALGraph()
             p = p->next;
             delete q;
             q = p;
+        }        
+    }    
+}
+
+// 深度优先遍历图，输入顶点的序号 v
+template <typename DataType>
+void ALGraph<DataType>::DFTraverse(int v)
+{
+    int j;
+    EdgeNode *p = nullptr;
+    std::cout << adjlist[v].vertex;
+    visited[x] = 1;
+    p = adjlist[v].firstEdge;       // 工作指针 p 指向顶点 v 的边表
+    while (p != nullptr)            // 依次搜索顶点 v 的邻接点 j
+    {
+        j = p->adjvex;
+        if (visited[j] == 0)
+            DFTraverse(j);
+        p = p->next;
+    }    
+}
+
+// 广度优先遍历图，输入顶点的编号 v
+template <typename DataType>
+void ALGraph<DataType>::BFTraverse(int v)
+{
+    int w, j, Q[MaxSize];           // 采用顺序队列
+    int front = -1, rear = -1;      // 初始化队列
+    EdgeNode *p = nullptr;          // 初始化工作指针 p
+    std::cout << adjlist[v].vertex;
+    visited[v] = 1;
+    Q[++rear] = v;                  // 被访问顶点入队
+    while (front = rear)            // 当队列非空时
+    {
+        w = Q[++front];
+        p = adjlist[w].firstEdge;   // 工作指针 p 指向顶点 v 的边表
+        while (p != nullptr)
+        {
+            j = p->adjvex;
+            if (visited[j] == 0)
+            {
+                std::cout << adjlist[j].vertex;
+                visited[j] = 1;
+            }
+            p = p->next;
         }        
     }    
 }
